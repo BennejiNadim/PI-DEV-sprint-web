@@ -1,0 +1,327 @@
+imports:
+    - { resource: parameters.yml }
+    - { resource: security.yml }
+    - { resource: services.yml }
+
+# Put parameters here that don't need to change on each machine where the app is deployed
+# https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
+parameters:
+    locale: en
+
+framework:
+    #esi: ~
+    translator: { fallbacks: ['%locale%'] }
+    secret: '%secret%'
+    router:
+        resource: '%kernel.project_dir%/app/config/routing.yml'
+        strict_requirements: ~
+    form: ~
+    csrf_protection: ~
+    validation: { enable_annotations: true }
+    #serializer: { enable_annotations: true }
+    default_locale: '%locale%'
+    trusted_hosts: ~
+    session:
+        # https://symfony.com/doc/current/reference/configuration/framework.html#handler-id
+        handler_id: session.handler.native_file
+        save_path: '%kernel.project_dir%/var/sessions/%kernel.environment%'
+    fragments: ~
+    http_method_override: true
+    assets: ~
+    php_errors:
+        log: true
+
+# Twig Configuration
+twig:
+    debug: '%kernel.debug%'
+    strict_variables: '%kernel.debug%'
+
+# Doctrine Configuration
+doctrine:
+    dbal:
+        mapping_types:
+            enum: string
+            set: string
+            varbinary: string
+            tinyblob: text
+        driver: pdo_mysql
+        host: '%database_host%'
+        port: '%database_port%'
+        dbname: '%database_name%'
+        user: '%database_user%'
+        password: '%database_password%'
+        charset: UTF8
+        # if using pdo_sqlite as your database driver:
+        #   1. add the path in parameters.yml
+        #     e.g. database_path: '%kernel.project_dir%/var/data/data.sqlite'
+        #   2. Uncomment database_path in parameters.yml.dist
+        #   3. Uncomment next line:
+        #path: '%database_path%'
+
+    orm:
+        auto_generate_proxy_classes: '%kernel.debug%'
+        naming_strategy: doctrine.orm.naming_strategy.underscore
+        auto_mapping: true
+
+# Swiftmailer Configuration
+swiftmailer:
+    transport: '%mailer_transport%'
+    host: '%mailer_host%'
+    username: '%mailer_user%'
+    password: '%mailer_password%'
+    spool: { type: memory }
+
+sensio_framework_extra:
+   router:
+        annotations: false
+
+fos_user:
+    db_driver: orm # other valid values are 'mongodb' and 'couchdb'
+    firewall_name: main
+    user_class: AppBundle\Entity\User
+    service:                               # this lines
+        mailer: fos_user.mailer.twig_swift # this lines
+    from_email:
+        address: "test@test.com"
+        sender_name: "nadim"
+
+easy_admin:
+  site_name: 'agora'
+  design:
+    assets:
+      css:
+        - '//example.org/css/admin1.css'
+
+    menu:
+      - {label: "Tables"}
+      - label: "Avis"
+        children:
+          - {entity: Avis, label: "liste des Avis", icon: "th-list"}
+          - {entity: Avis, label: "ajouter Avis", icon: "plus",params:{action: 'new'}}
+      - label: "Cartes Fidelite"
+        children:
+          - {entity: CarteFidelite, label: "Liste de cartes fidelité", icon: "th-list"}
+          - {entity: CarteFidelite, label: "ajouter carte fidelité", icon: "plus",params:{action: 'new'}}
+      - label: "Categories"
+        children:
+          - {entity: Categorie, label: "Liste de categories", icon: "th-list"}
+          - {entity: Categorie, label: "ajouter categorie", icon: "plus",params:{action: 'new'}}
+      - label: "Commandes"
+        children:
+          - {entity: Commande, label: "Liste de Commandes", icon: "th-list"}
+          - {entity: Commande, label: "ajouter Commande", icon: "plus",params:{action: 'new'}}
+      - label: "Factures"
+        children:
+          - {entity: Facture, label: "Liste de factures", icon: "th-list"}
+          - {entity: Facture, label: "ajouter factures", icon: "plus",params:{action: 'new'}}
+      - label: "Fournisseurs"
+        children:
+          - {entity: Fournisseur, label: "Liste de Fournisseurs", icon: "th-list"}
+          - {entity: Fournisseur, label: "ajouter Fournisseur", icon: "plus",params:{action: 'new'}}
+      - label: "Historique equipements"
+        children:
+          - {entity: Historiqueequipements, label: "Liste Historique equipemets", icon: "th-list"}
+          - {entity: Historiqueequipements, label: "ajouter historique equipement", icon: "plus",params:{action: 'new'}}
+      - label: "Ligne Commande"
+        children:
+          - {entity: LigneCommande, label: "Liste de Ligne commande", icon: "th-list"}
+          - {entity: LigneCommande, label: "ajouter Ligne commande", icon: "plus",params:{action: 'new'}}
+      - label: "Livraison"
+        children:
+          - {entity: Livraison, label: "Liste de Livraisons", icon: "th-list"}
+          - {entity: Livraison, label: "ajouter Livraison", icon: "plus",params:{action: 'new'}}
+      - label: "Marques"
+        children:
+          - {entity: Marque, label: "Liste de marques", icon: "th-list"}
+          - {entity: Marque, label: "ajouter marque", icon: "plus",params:{action: 'new'}}
+      - label: "Materiels"
+        children:
+          - {entity: Materiels, label: "Liste de Materiels", icon: "th-list"}
+          - {entity: Materiels, label: "ajouter materiel", icon: "plus",params:{action: 'new'}}
+      - label: "Mouvements produit"
+        children:
+          - {entity: MouvementProduit, label: "Liste de Mouvements produit", icon: "th-list"}
+          - {entity: MouvementProduit, label: "ajouter Mouvement", icon: "plus",params:{action: 'new'}}
+      - label: "Produits"
+        children:
+          - {entity: Produit, label: "Liste de Produits", icon: "th-list"}
+          - {entity: Produit, label: "ajouter produit", icon: "plus",params:{action: 'new'}}
+      - label: "Reclamations"
+        children:
+          - {entity: Reclamation, label: "Liste de reclamations", icon: "th-list"}
+          - {entity: Reclamation, label: "ajouter reclamation", icon: "plus",params:{action: 'new'}}
+      - label: "Transactions"
+        children:
+          - {entity: Transaction, label: "Liste de Transactions", icon: "th-list"}
+          - {entity: Transaction, label: "ajouter Transaction", icon: "plus",params:{action: 'new'}}
+      - label: "Users"
+        children:
+          - {entity: User, label: "liste users", icon: "th-list"}
+          - {entity: User, label: "ajouter user", icon: "plus", params: {action: 'new'}}
+      - label: "Vehicule"
+        children:
+          - {entity: Vehicule, label: "Liste de vehicules", icon: "th-list"}
+          - {entity: Vehicule, label: "ajouter vehicule", icon: "plus",params:{action: 'new'}}
+      - {label: "Settings"}
+      - {entity: User, icon: "user"}
+
+
+  entities:
+    User:
+      class: AppBundle\Entity\User
+      form:
+        fields:
+          - username
+          - email
+          - roles
+          - enabled
+          - lastLogin
+          - { property: 'plainPassword', type: 'text', type_options: { required: false } }
+          - { property: 'roles', type: 'choice', type_options: { multiple: true, choices: { 'ROLE_USER': 'ROLE_USER', 'ROLE_ADMIN': 'ROLE_ADMIN' } } }
+      list:
+        collapse_actions: true
+        actions: ['show', 'edit', 'delete']
+        batch_actions: ['delete']
+    Produit:
+      class: AppBundle\Entity\Produit
+      form:
+        fields:
+          - ref_produit
+          - nom_produit
+          - marque
+          - categorie
+          - quantite_stock
+          - quantite_magasin
+          - prix_vente
+          - prix_achat
+          - { property: 'imageFile', type: 'vich_image' }
+      list:
+        collapse_actions: true
+        actions: ['show', 'edit', 'delete']
+        batch_actions: ['delete']
+        fields:
+          - ref_produit
+          - nom_produit
+          - marque
+          - categorie
+          - quantite_stock
+          - quantite_magasin
+          - prix_vente
+          - prix_achat
+          - { property: 'image', type: 'image', base_path: 'public/images/products/' }
+      show:
+        fields:
+          - ref_produit
+          - nom_produit
+          - marque
+          - categorie
+          - quantite_stock
+          - quantite_magasin
+          - prix_vente
+          - prix_achat
+          - { property: 'image', type: 'image', base_path: 'public/images/products/' }
+
+    Avis:
+      class: AppBundle\Entity\Avis
+      list:
+        collapse_actions: true
+        actions: ['show', 'edit', 'delete']
+        batch_actions: ['delete']
+    CarteFidelite:
+      class: AppBundle\Entity\CarteFidelite
+      list:
+        collapse_actions: true
+        actions: ['show', 'edit', 'delete']
+        batch_actions: ['delete']
+    Categorie:
+      class: AppBundle\Entity\Categorie
+      list:
+        collapse_actions: true
+        actions: ['show', 'edit', 'delete']
+        batch_actions: ['delete']
+    Commande:
+      class: AppBundle\Entity\Commande
+      list:
+        collapse_actions: true
+        actions: ['show', 'edit', 'delete']
+        batch_actions: ['delete']
+        sort: ['date', 'DESC']
+    Facture:
+      class: AppBundle\Entity\Facture
+      list:
+        collapse_actions: true
+        actions: ['show', 'edit', 'delete']
+        batch_actions: ['delete']
+        sort: ['datefacturation', 'DESC']
+    Fournisseur:
+      class: AppBundle\Entity\Fournisseur
+      list:
+        collapse_actions: true
+        actions: ['show', 'edit', 'delete']
+        batch_actions: ['delete']
+    Historiqueequipements:
+      class: AppBundle\Entity\Historiqueequipements
+      list:
+        collapse_actions: true
+        actions: ['show', 'edit', 'delete']
+        batch_actions: ['delete']
+        sort: ['date', 'DESC']
+    LigneCommande:
+      class: AppBundle\Entity\LigneCommande
+      list:
+        collapse_actions: true
+        actions: ['show', 'edit', 'delete']
+        batch_actions: ['delete']
+    Livraison:
+      class: AppBundle\Entity\Livraison
+      list:
+        collapse_actions: true
+        actions: ['show', 'edit', 'delete']
+        batch_actions: ['delete']
+    Marque:
+      class: AppBundle\Entity\Marque
+      list:
+        collapse_actions: true
+        actions: ['show', 'edit', 'delete']
+        batch_actions: ['delete']
+    Materiels:
+      class: AppBundle\Entity\Materiels
+      list:
+        collapse_actions: true
+        actions: ['show', 'edit', 'delete']
+        batch_actions: ['delete']
+    MouvementProduit:
+      class: AppBundle\Entity\Mouvementproduit
+      list:
+        collapse_actions: true
+        actions: ['show', 'edit', 'delete']
+        batch_actions: ['delete']
+        sort: ['date', 'DESC']
+    Reclamation:
+      class: AppBundle\Entity\Reclamation
+      list:
+        collapse_actions: true
+        actions: ['show', 'edit', 'delete']
+        batch_actions: ['delete']
+        sort: ['date', 'DESC']
+    Transaction:
+      class: AppBundle\Entity\Transaction
+      list:
+        collapse_actions: true
+        actions: ['show', 'edit', 'delete']
+        batch_actions: ['delete']
+        sort: ['date', 'DESC']
+    Vehicule:
+      class: AppBundle\Entity\Vehicule
+      list:
+        collapse_actions: true
+        actions: ['show', 'edit', 'delete']
+        batch_actions: ['delete']
+vich_uploader:
+  db_driver: orm # or mongodb or phpcr
+  mappings:
+    product_images:
+      uri_prefix: /images/products
+      upload_destination: '%kernel.project_dir%/web/public/images/products'
+
+

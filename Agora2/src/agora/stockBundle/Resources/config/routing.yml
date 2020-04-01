@@ -1,0 +1,19 @@
+stock_homepage:
+    path:     /
+    defaults: { _controller: stockBundle:Default:index }
+
+products:
+    path:     /products
+    defaults: { _controller: stockBundle:Default:listProducts }
+
+productsByCatg:
+    path:     /products/categories/{catg}
+    defaults: { _controller: stockBundle:Default:listProductsByCatg }
+
+productsByMarq:
+    path:     /products/marques/{marq}
+    defaults: { _controller: stockBundle:Default:listProductsByMarq }
+
+Search:
+    path:     /search
+    defaults: { _controller: stockBundle:Default:searchProducts }
